@@ -3,7 +3,7 @@
 
 ## Description
 
-AI-Selfie-Station-Backend is a TypeScript-based backend application built using Fastify. It provides RESTful APIs for managing and processing AI selfie stations, including features such as Swagger documentation and utility functions.
+Selfie Station CMS is a monorepository for full-stack backend project
 
 ## Features
 
