@@ -14,7 +14,10 @@ export const connectSchema: FastifySchema = {
     properties: {
       clientId: { type: 'string' },
     },
-  } as const,
+  },
+  summary: 'Connect client',
+  description: 'Handles client connections',
+  tags: ['Client'],
 }
 
 export default async (fastify: FastifyInstance) => {
@@ -41,7 +44,7 @@ export default async (fastify: FastifyInstance) => {
       if (users.hasUser(clientId.toString())) {
         const userUuid = users.getUser(clientId.toString())?.userUuid
         console.info('User connected. User uuid:', userUuid)
-        reply.code(200).send()
+        reply.code(200).send(userUuid)
         return
       }
       // eslint-disable-next-line no-await-in-loop

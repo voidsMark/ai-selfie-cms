@@ -5,9 +5,23 @@ const routes = import.meta.glob<any>('./routes/**/*.ts', { eager: true })
 export const createApp = (options?: FastifyServerOptions) => {
   const app = fastify(options)
 
-  app.register(import('@fastify/swagger'))
+  app.register(import('@fastify/swagger'), {
+    swagger: {
+      info: {
+        title: 'Selfie Stand API',
+        description: 'API documentation for the selfie stand project',
+        version: '0.0.1',
+      },
+      consumes: ['application/json'],
+      produces: ['application/json'],
+    },
+  })
+
   app.register(import('@fastify/swagger-ui'), {
     routePrefix: '/docs',
+    uiConfig: {
+      docExpansion: 'list',
+    },
   })
 
   const routePrefix = '/api'
