@@ -11,7 +11,10 @@ export const selectSchema: FastifySchema = {
       clientId: { type: 'string' },
       clientUuid: { type: 'string' },
     },
-  } as const,
+  },
+  summary: 'Select client',
+  description: 'Associates a client ID with a client UUID.',
+  tags: ['Client Management'],
 }
 
 export default async (fastify: FastifyInstance) => {
