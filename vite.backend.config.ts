@@ -3,6 +3,7 @@ import builtins from 'builtin-modules'
 import path, { join } from 'path'
 import pkg from './package.json'
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default defineConfig((env) => ({
   build: {
     target: 'node18',
