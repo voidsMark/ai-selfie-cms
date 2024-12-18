@@ -29,7 +29,7 @@ export default async (fastify: FastifyInstance) => {
     }
 
     if (kiosks.hasKiosk(clientId.toString())) {
-      reply.code(400).send('client already connected')
+      reply.code(409).send('client already connected')
       return
     }
 
@@ -54,6 +54,6 @@ export default async (fastify: FastifyInstance) => {
     }
 
     kiosks.removeKiosk(clientId.toString())
-    reply.code(404).send('client not found')
+    reply.code(404).send('No users found')
   })
 }
