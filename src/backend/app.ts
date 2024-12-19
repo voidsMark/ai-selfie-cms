@@ -1,5 +1,6 @@
 import fastify, { FastifyServerOptions } from 'fastify'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const routes = import.meta.glob<any>('./routes/**/*.ts', { eager: true })
 
 export const createApp = (options?: FastifyServerOptions) => {
