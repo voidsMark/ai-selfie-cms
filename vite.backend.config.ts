@@ -5,7 +5,7 @@ import pkg from './package.json'
 
 export default defineConfig((env) => ({
   build: {
-    target: 'node18',
+    target: 'node22',
     minify: false,
     sourcemap: true,
     lib: {
@@ -13,7 +13,6 @@ export default defineConfig((env) => ({
         app: 'src/backend/index.ts',
       },
       formats: ['cjs'],
-      name: 'app',
     },
     modulePreload: {
       polyfill: false,
@@ -21,7 +20,8 @@ export default defineConfig((env) => ({
     ssr: true,
     rollupOptions: {
       output: {
-        chunkFileNames: '[name].cjs',
+        entryFileNames: `${pkg.name}-backend.cjs`,
+        chunkFileNames: `${pkg.name}-backend.cjs`,
       },
       external: [
         ...Object.keys(pkg.dependencies),

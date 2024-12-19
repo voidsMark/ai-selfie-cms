@@ -7,7 +7,8 @@
   "type": "module",
   "scripts": {
     "dev": "yarn vite-node src/backend/index.ts",
-    "build:backend": "vite build -c vite.backend.config.ts"
+    "build:backend": "vite build -c vite.backend.config.ts",
+    "lint": "eslint . --ext .ts"
   },
   "dependencies": {
     "@fastify/swagger": "^9.4.0",
