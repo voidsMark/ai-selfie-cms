@@ -1,0 +1,59 @@
+on:
+  push
+
+jobs:
+  # lint:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Install Node.js
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 22
+  #     - run: yarn install --frozen-lockfile
+  #     - run: yarn lint
+
+  deploy:
+    # needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+      - run: yarn install --frozen-lockfile
+      - run: yarn build:backend
+
+      - name: Upload files to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HOST_ADDRESS }}
+          username: ${{ secrets.HOST_USER }}
+          password: ${{ secrets.HOST_PASSWORD }}
+          port: ${{ secrets.HOST_PORT }}
+          overwrite: true
+          strip_components: 2
+          source: dist/backend/*
+          target: /apps/ssdev/backend/
+
+      - name: Install production dependencies and restart PM2
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.HOST_ADDRESS }}
+          username: ${{ secrets.HOST_USER }}
+          password: ${{ secrets.HOST_PASSWORD }}
+          port: ${{ secrets.HOST_PORT }}
+          script: |
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+            echo "Using Node version:"
+            node -v || echo "Node.js not found"
+            echo "Checking Yarn:"
+            yarn -v || echo "Yarn not found"
+            echo "Checking PM2:"
+            pm2 -v || echo "PM2 not found"
+            nvm use 22
+            cd /apps/ssdev/backend
+            yarn install --production
+            pm2 restart ai-selfie-cms-backend || pm2 start dist/main.js --name ai-selfie-cms-backend
