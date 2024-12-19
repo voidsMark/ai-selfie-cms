@@ -37,6 +37,6 @@ module.exports = {
     }],
     'arrow-body-style': ['error', 'as-needed'],
     'semi': ['error', 'never'],
-    'linebreak-style': ['error', 'windows'],
+    'linebreak-style': 'off',
   },
 }
