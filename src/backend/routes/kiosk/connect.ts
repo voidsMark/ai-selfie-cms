@@ -44,6 +44,10 @@ export default async (fastify: FastifyInstance) => {
       if (users.hasUser(clientId.toString())) {
         const userUuid = users.getUser(clientId.toString())?.userUuid
         console.info('User connected. User uuid:', userUuid)
+
+        // eslint-disable-next-line no-use-before-define
+        removeKioskByTimeout(clientId.toString())
+
         reply.code(200).send(userUuid)
         return
       }
@@ -54,6 +58,17 @@ export default async (fastify: FastifyInstance) => {
     }
 
     kiosks.removeKiosk(clientId.toString())
-    reply.code(404).send('No users found')
+    reply.code(204).send('No users found')
   })
+}
+
+const removeKioskByTimeout = async (clientId: string, timeout: number = 10) => {
+  try {
+    utils.sleep(timeout * 1000).then(() => {
+      kiosks.removeKiosk(clientId)
+    })
+    console.log('kiosk removed by timeout:', clientId)
+  } catch (error) {
+    console.log('removeKioskByTimeout error:', error)
+  }
 }
