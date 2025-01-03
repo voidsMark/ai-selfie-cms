@@ -31,7 +31,7 @@ export const createApp = (options?: FastifyServerOptions) => {
       continue
     }
     const path = key.slice('./routes/'.length).split('/')
-    app.register(route, { prefix: [routePrefix, ...path.slice(0, -1)].join('/') })
+    app.register(route, { prefix: [routePrefix, ...path.slice(0, -1)].join('/').toLowerCase() })
   }
 
   app.addHook('onRequest', (request, reply, done) => {
